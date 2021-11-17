@@ -25,6 +25,11 @@ function App() {
     const [eggThreeTop, setEggThreeTop] = React.useState(0);
     const [eggFourTop ,setEggFourTop] = React.useState(0);
 
+    const [fallRateEggOne, setFallRateEggOne] = React.useState(10);
+    const [fallRateEggTwo, setFallRateEggTwo] = React.useState(30);
+    const [fallRateEggThree, setFallRateEggThree] = React.useState(20);
+    const [fallRateEggFour, setFallRateEggFour] = React.useState(13);
+
     const basketRef = React.useRef(null);
 
     const eggOneRef = React.useRef(null);
@@ -47,16 +52,22 @@ function App() {
     }
 
     const getRandomInt = max => Math.floor(Math.random() * max);
-    const getNewHeight = top => top < -400 ? 0 : top - getRandomInt(30);
+
 
     React.useEffect(() => {
         let isAlive;
         if (isPlaying) {
             isAlive = setInterval(() => {
-                setEggOneTop(getNewHeight);
-                setEggTwoTop(getNewHeight);
-                setEggThreeTop(getNewHeight);
-                setEggFourTop(getNewHeight);
+
+                const getNewHeight0 = top => top < -400 ? 0 : top - fallRateEggOne;
+                const getNewHeight1 = top => top < -400 ? 0 : top - fallRateEggTwo;
+                const getNewHeight2 = top => top < -400 ? 0 : top - fallRateEggThree;
+                const getNewHeight3 = top => top < -400 ? 0 : top - fallRateEggFour;
+
+                setEggOneTop(getNewHeight0);
+                setEggTwoTop(getNewHeight1);
+                setEggThreeTop(getNewHeight2);
+                setEggFourTop(getNewHeight3);
 
                 let basketLeft = parseInt(window.getComputedStyle(basketRef.current).getPropertyValue("left"));
                 let eggOne = parseInt(window.getComputedStyle(eggOneRef.current).getPropertyValue("bottom"));
@@ -64,25 +75,34 @@ function App() {
                 let eggThree = parseInt(window.getComputedStyle(eggThreeRef.current).getPropertyValue("bottom"));
                 let eggFour = parseInt(window.getComputedStyle(eggFourRef.current).getPropertyValue("bottom"));
 
-                if(basketLeft < 140 && basketLeft > 80 && eggOne < -350) {
+                console.log(eggFour);
+                console.log(basketLeft);
+
+                if(basketLeft < 140 && basketLeft >= 80 && eggOne < -350) {
                     setGlasses(prevState => ++prevState);
+                    setFallRateEggOne(() => getRandomInt(30))
                     setEggOneTop(0);
-                } else if(basketLeft < 320 && basketLeft > 260 && eggTwo < -350){
+                } else if(basketLeft < 320 && basketLeft >= 260 && eggTwo < -350){
                     setGlasses(prevState => ++prevState);
+                    setFallRateEggTwo(() => getRandomInt(30))
                     setEggTwoTop(0);
-                } else if (basketLeft < 500 && basketLeft > 440 && eggTwo < -350){
+                } else if (basketLeft < 500 && basketLeft >= 440 && eggThree < -350){
                     setGlasses(prevState => ++prevState);
+                    setFallRateEggThree(() => getRandomInt(30))
                     setEggThreeTop(0);
-                } else if (basketLeft < 660 && basketLeft > 600 && eggTwo < -350){
+                } else if (basketLeft < 660 && basketLeft >= 600 && eggFour < -350){
                     setGlasses(prevState => ++prevState);
+                    setFallRateEggFour(() => getRandomInt(30))
                     setEggFourTop(0);
 
                 } else if (eggOne < -400 || eggTwo < -400 || eggThree < -400 || eggFour < -400){
                     alert('Вы проиграли');
+                    setGlasses(0);
                     setEggOneTop(0);
                     setEggTwoTop(0);
                     setEggThreeTop(0);
                     setEggFourTop(0);
+
                     setIsPlaying(false);
                     clearInterval(isAlive);
                 }
