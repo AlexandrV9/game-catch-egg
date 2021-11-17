@@ -35,15 +35,16 @@
 }
 
 .hens {
-  padding-top: 15px;
+  padding: 15px 60px;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
 
 .hen {
   position: relative;
   width: 100px;
   height: 100px;
+
 }
 
 .hen-icon {
@@ -62,7 +63,6 @@
 }
 
 .basket {
-  /*left: 50%;*/
   transform: translateX(-50%);
   bottom: 5px;
   position: absolute;
